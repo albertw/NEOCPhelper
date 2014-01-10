@@ -12,16 +12,26 @@ package neocphelperfx.model;
 public class NEOCP {
 
     private String tmpdesig;
-    private String score;
+    private Integer score;
     private String discovery;
-    private String ra;
+    private Float ra;
     private String dec;
-    private String v;
+    private Float v;
     private String updated;
     private String note;
-    private String observations;
-    private String arc;
-    private String h;
+    private Integer observations;
+    private Float arc;
+    private Float h;
+    
+    private Float g;
+    private String epoch;
+    private Float m;
+    private Float peri;
+    private Float node;
+    private Float incl;
+    private Float e;
+    private Float n;
+    private Float a;
     
     /**
      * Default constructor.
@@ -44,9 +54,9 @@ public class NEOCP {
      * @param arc
      * @param h
      */
-    public NEOCP(String tmpdesig, String score, String discovery, String ra, 
-            String dec, String v, String updated, String note, String observations,
-            String arc, String h) {
+    public NEOCP(String tmpdesig, Integer score, String discovery, Float ra, 
+            String dec, Float v, String updated, String note, Integer observations,
+            Float arc, Float h) {
         this.tmpdesig = tmpdesig;
         this.score = score;
         this.discovery=discovery;
@@ -65,7 +75,43 @@ public class NEOCP {
         return tmpdesig;
     }
 
-    public String getScore() {
+    public Float getG() {
+        return g;
+    }
+
+    public String getEpoch() {
+        return epoch;
+    }
+
+    public Float getM() {
+        return m;
+    }
+
+    public Float getPeri() {
+        return peri;
+    }
+
+    public Float getNode() {
+        return node;
+    }
+
+    public Float getIncl() {
+        return incl;
+    }
+
+    public Float getE() {
+        return e;
+    }
+
+    public Float getN() {
+        return n;
+    }
+
+    public Float getA() {
+        return a;
+    }
+
+    public Integer getScore() {
         return score;
     }
 
@@ -73,7 +119,7 @@ public class NEOCP {
         return discovery;
     }
 
-    public String getRa() {
+    public Float getRa() {
         return ra;
     }
 
@@ -81,7 +127,7 @@ public class NEOCP {
         return dec;
     }
 
-    public String getV() {
+    public Float getV() {
         return v;
     }
 
@@ -93,15 +139,15 @@ public class NEOCP {
         return note;
     }
 
-    public String getObservations() {
+    public Integer getObservations() {
         return observations;
     }
 
-    public String getArc() {
+    public Float getArc() {
         return arc;
     }
 
-    public String getH() {
+    public Float getH() {
         return h;
     }
     
