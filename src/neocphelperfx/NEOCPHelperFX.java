@@ -368,7 +368,7 @@ public class NEOCPHelperFX extends Application {
     @Override
     public void start(Stage primaryStage) {
         this.primaryStage = primaryStage;
-        this.primaryStage.setTitle("NEOCPHelperFX");
+        this.primaryStage.setTitle("NEOCPHelper");
 
         try {
             // Load the root layout from the fxml file
