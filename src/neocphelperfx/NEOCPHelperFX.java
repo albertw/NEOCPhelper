@@ -22,6 +22,7 @@ import java.util.regex.Pattern;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -163,7 +164,7 @@ public class NEOCPHelperFX extends Application {
                                 Float e = Float.parseFloat(m.group(9).trim());
                                 Float n = Float.parseFloat(m.group(10).trim());
                                 Float a = Float.parseFloat(m.group(11).trim());
-                                output=output+String.format("  %-19.19s|%-14.14s|%8.6f  "
+                                output = output + String.format("  %-19.19s|%-14.14s|%8.6f  "
                                         + "|%8f|%8.4f|%8.4f |%8.4f| 2000|"
                                         + "%9.4f  |%5.2f|%-5.2f|   0.00" + (System.getProperty("line.separator")), TmpDesig,
                                         unpackEpoch(Epoch), e, a, Incl, Node, Peri, M,
@@ -177,21 +178,21 @@ public class NEOCPHelperFX extends Application {
                     }
                 }
             }
-            
-             FileChooser fileChooser = new FileChooser();
-             FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
-             fileChooser.getExtensionFilters().add(extFilter);
 
-             fileChooser.setTitle("Save TheSkyX Small Asteroid DB File");
-             fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+            FileChooser fileChooser = new FileChooser();
+            FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
+            fileChooser.getExtensionFilters().add(extFilter);
 
-             File file = fileChooser.showSaveDialog(primaryStage);
+            fileChooser.setTitle("Save TheSkyX Small Asteroid DB File");
+            fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
 
-             if (file != null) {
-             SaveFile(output, file);
+            File file = fileChooser.showSaveDialog(primaryStage);
 
-             }
-             
+            if (file != null) {
+                SaveFile(output, file);
+
+            }
+
         } catch (MalformedURLException e) {
             System.out.println("Please check the URL:"
                     + e.toString());
@@ -247,8 +248,8 @@ public class NEOCPHelperFX extends Application {
                                 Float e = Float.parseFloat(m.group(9).trim());
                                 Float n = Float.parseFloat(m.group(10).trim());
                                 Float a = Float.parseFloat(m.group(11).trim());
-            
-                                output=output+String.format("%7s %5.2f %5.2f %5s "
+
+                                output = output + String.format("%7s %5.2f %5.2f %5s "
                                         + "%9.5f  %9.5f  %9.5f  %9.5f  %9.7f %11.8f %11.7f"
                                         + "  0 NEOCP        10   1    1 days "
                                         + "0.00         Z72GUESS   0000    %-28s     "
@@ -264,21 +265,21 @@ public class NEOCPHelperFX extends Application {
                     }
                 }
             }
-            
-             FileChooser fileChooser = new FileChooser();
-             FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
-             fileChooser.getExtensionFilters().add(extFilter);
 
-             fileChooser.setTitle("Save TheSkyX Small Asteroid DB File");
-             fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+            FileChooser fileChooser = new FileChooser();
+            FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
+            fileChooser.getExtensionFilters().add(extFilter);
 
-             File file = fileChooser.showSaveDialog(primaryStage);
+            fileChooser.setTitle("Save TheSkyX Small Asteroid DB File");
+            fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
 
-             if (file != null) {
-             SaveFile(output, file);
+            File file = fileChooser.showSaveDialog(primaryStage);
 
-             }
-             
+            if (file != null) {
+                SaveFile(output, file);
+
+            }
+
         } catch (MalformedURLException e) {
             System.out.println("Please check the URL:"
                     + e.toString());
@@ -289,11 +290,12 @@ public class NEOCPHelperFX extends Application {
 
     }
 
-    public void clearNEOCP() {
-        
+    public void getNEOCP() {
+
         neocpData.clear();
 
         String nextLine;
+        String failedLines = "";
         URL url = null;
         URLConnection urlConn = null;
         InputStreamReader inStream = null;
@@ -311,12 +313,12 @@ public class NEOCPHelperFX extends Application {
             while (true) {
                 nextLine = buff.readLine();
                 if (nextLine != null) {
-
+                    System.out.println(nextLine);
                     Pattern splitPattern = Pattern.compile("^(.{7}) (.{3}) "
-                            + "(.{12}) (.{8}) (.{8}) (.{4}) (.{20})  (.{9}) "
-                            + "(.{3})  (.{4}) (.{4})");
+                            + "(.{12}) (.{8}) (.{8}) (.{4}) (.{21})  (.{7}) "
+                            + "(.{3})  (.{5}) (.{4})");
                     Matcher m = splitPattern.matcher(nextLine);
-                    while (m.find()) {
+                    if (m.find()) {
 
                         int m2 = Integer.parseInt(m.group(2).trim());
                         Float m4 = Float.parseFloat(m.group(4).trim());
@@ -330,17 +332,26 @@ public class NEOCPHelperFX extends Application {
                                 m6, m.group(7).trim(),
                                 m.group(8).trim(), m9,
                                 m10, m11));
+                    } else {
+                        failedLines = failedLines + nextLine + System.getProperty("line.separator");
                     }
 
                 } else {
                     break;
                 }
             }
+            if (failedLines != "") {
+                Debug("The following lines did not parse correctly:" + failedLines);
+            }
         } catch (MalformedURLException e) {
             System.out.println("Please check the URL:"
                     + e.toString());
+            Debug("Please check the URL:"
+                    + e.toString());
         } catch (IOException e1) {
             System.out.println("Can't read  from the Internet: "
+                    + e1.toString());
+            Debug("Can't read  from the Internet: "
                     + e1.toString());
         }
     }
@@ -471,6 +482,19 @@ public class NEOCPHelperFX extends Application {
             Month = (map.get(m.group(3).trim()));
             Day = (map.get(m.group(4).trim()));
         }
-        return String.format("%s %s %s"+".000", Year, Month, Day);
+        return String.format("%s %s %s" + ".000", Year, Month, Day);
+    }
+
+    public void Debug(String msg) {
+
+        Text about = new Text(msg);
+        about.setWrappingWidth(400);
+        Stage dialogStage = new Stage();
+        dialogStage.initModality(Modality.WINDOW_MODAL);
+        dialogStage.setTitle("Debug");
+        dialogStage.setScene(new Scene(VBoxBuilder.create().
+                children(about).
+                alignment(Pos.CENTER).padding(new Insets(5)).build()));
+        dialogStage.show();
     }
 }

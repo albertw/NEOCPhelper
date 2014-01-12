@@ -27,7 +27,7 @@ public class RootLayoutController {
 
     public void newAboutFired(ActionEvent event) {
 
-        Text about = new Text("NEOCPHelper by Albert.white@gmail.com (Z72). 10-01-2014"
+        Text about = new Text("NEOCPHelper by Albert.white@gmail.com (Z72). 12-01-2014"
                 + System.getProperty("line.separator") + "Loads the NEOCP list from the MPS and provides observations for Find_ORB and also asteroid databases for TheSkyX."
                 + System.getProperty("line.separator") + System.getProperty("line.separator")
                 + "Very incomplete list of known bugs:"

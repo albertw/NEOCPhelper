@@ -118,7 +118,7 @@ public class NEOCPHelperfxController {
     
     public void newNEOCPFired(ActionEvent event) {
 
-        nEOCPHelperFX.clearNEOCP();
+        nEOCPHelperFX.getNEOCP();
         //NEOCPlist.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
 
         /*lineColumn.setCellValueFactory(new PropertyValueFactory<NEOCP, String>("mpcline"));
