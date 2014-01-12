@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package neocphelperfx;
+package neocphelper;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -48,5 +48,5 @@ about.setWrappingWidth(400);
     }
 
     // Reference to the main application
-    private NEOCPHelperFX nEOCPHelperFX;
+    private NEOCPHelper nEOCPHelper;
 }

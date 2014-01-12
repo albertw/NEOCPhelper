@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package neocphelperfx;
+package neocphelper;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -35,13 +35,13 @@ import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import neocphelperfx.model.NEOCP;
+import neocphelper.model.NEOCP;
 
 /**
  *
  * @author Albert
  */
-public class NEOCPHelperFX extends Application {
+public class NEOCPHelper extends Application {
 
     private Stage primaryStage;
     private BorderPane rootLayout;
@@ -53,7 +53,7 @@ public class NEOCPHelperFX extends Application {
     /**
      * Constructor
      */
-    public NEOCPHelperFX() {
+    public NEOCPHelper() {
         // Add some sample data
         /*
          neocpData.add(new NEOCP("Ceres","","","","","","","","","",""));
@@ -372,7 +372,7 @@ public class NEOCPHelperFX extends Application {
 
         try {
             // Load the root layout from the fxml file
-            FXMLLoader loader = new FXMLLoader(NEOCPHelperFX.class
+            FXMLLoader loader = new FXMLLoader(NEOCPHelper.class
                     .getResource("RootLayout.fxml"));
             rootLayout = (BorderPane) loader.load();
             Scene scene = new Scene(rootLayout);
@@ -408,14 +408,14 @@ public class NEOCPHelperFX extends Application {
             void showNEOCPOverview() {
         try {
             // Load the fxml file and set into the center of the main layout
-            FXMLLoader loader = new FXMLLoader(NEOCPHelperFX.class
-                    .getResource("NEOCPHelperfx.fxml"));
+            FXMLLoader loader = new FXMLLoader(NEOCPHelper.class
+                    .getResource("NEOCPHelper.fxml"));
             AnchorPane overviewPage = (AnchorPane) loader.load();
 
             rootLayout.setCenter(overviewPage);
 
             // Give the controller access to the main app
-            NEOCPHelperfxController controller = loader.getController();
+            NEOCPHelperController controller = loader.getController();
 
             controller.setMainApp(
                     this);
@@ -433,7 +433,7 @@ public class NEOCPHelperFX extends Application {
             fileWriter.write(content);
             fileWriter.close();
         } catch (IOException ex) {
-            Logger.getLogger(NEOCPHelperFX.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(NEOCPHelper.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }

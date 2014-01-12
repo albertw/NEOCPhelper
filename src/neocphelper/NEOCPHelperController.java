@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package neocphelperfx;
+package neocphelper;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -12,14 +12,14 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import neocphelperfx.model.NEOCP;
+import neocphelper.model.NEOCP;
 
 /**
  * FXML Controller class
  *
  * @author Albert
  */
-public class NEOCPHelperfxController {
+public class NEOCPHelperController {
 
     @FXML
     Button newNEOCP;
@@ -65,14 +65,14 @@ public class NEOCPHelperfxController {
     private TableColumn<NEOCP, Float> hColumn;
  
     // Reference to the main application
-    private NEOCPHelperFX nEOCPHelperFX;
+    private NEOCPHelper nEOCPHelper;
 
 
     /**
      * The constructor. The constructor is called before the initialize()
      * method.
      */
-    public NEOCPHelperfxController() {
+    public NEOCPHelperController() {
     }
 
     /**
@@ -97,17 +97,17 @@ public class NEOCPHelperfxController {
     }
 
     public void newSmallDBFired(ActionEvent event){
-        nEOCPHelperFX.genSmallDB();
+        nEOCPHelper.genSmallDB();
         System.out.println("Pushed new Small DB Button.");
     }
 
     public void newLargeDBFired(ActionEvent event){
-        nEOCPHelperFX.genLargeDB();
+        nEOCPHelper.genLargeDB();
         System.out.println("Pushed new Large DB Button.");
     }
     
     public void newFindOrbFired(ActionEvent event){
-        nEOCPHelperFX.printFindOrb();
+        nEOCPHelper.printFindOrb();
         System.out.println("Pushed new FindOrb button.");
     }
     /*
@@ -118,7 +118,7 @@ public class NEOCPHelperfxController {
     
     public void newNEOCPFired(ActionEvent event) {
 
-        nEOCPHelperFX.getNEOCP();
+        nEOCPHelper.getNEOCP();
         //NEOCPlist.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
 
         /*lineColumn.setCellValueFactory(new PropertyValueFactory<NEOCP, String>("mpcline"));
@@ -134,14 +134,14 @@ public class NEOCPHelperfxController {
     /**
      * Is called by the main application to give a reference back to itself.
      *
-     * @param nEOCPHelperFX
+     * @param nEOCPHelper
      */
-    public void setMainApp(NEOCPHelperFX nEOCPHelperFX) {
-        this.nEOCPHelperFX = nEOCPHelperFX;
+    public void setMainApp(NEOCPHelper nEOCPHelper) {
+        this.nEOCPHelper = nEOCPHelper;
         // Add observable list data to the table
-        NEOCPlist.setItems(nEOCPHelperFX.getNEOCPData());
+        NEOCPlist.setItems(nEOCPHelper.getNEOCPData());
         System.out.println("in setMainApp:");
-        System.out.println(nEOCPHelperFX.getNEOCPData());
+        System.out.println(nEOCPHelper.getNEOCPData());
     }
 
 }

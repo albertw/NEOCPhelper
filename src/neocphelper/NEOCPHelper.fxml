@@ -8,7 +8,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" disable="false" focusTraversable="false" prefHeight="400.0" prefWidth="700.0" style="&#10;" styleClass="null" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="neocphelperfx.NEOCPHelperfxController">
+<AnchorPane id="AnchorPane" disable="false" focusTraversable="false" prefHeight="400.0" prefWidth="700.0" style="&#10;" styleClass="null" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="neocphelper.NEOCPHelperController">
   <children>
     <VBox layoutY="61.0" prefHeight="311.0" prefWidth="99.0" spacing="25.0" AnchorPane.rightAnchor="10.0">
       <children>
