@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Copyright (C) 2014 Albert White <albert.white@gmail.com>
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+-->
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" disable="false" focusTraversable="false" prefHeight="400.0" prefWidth="700.0" style="&#10;" styleClass="null" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="neocphelper.NEOCPHelperController">
+  <children>
+    <HBox layoutX="10.0" layoutY="14.0" prefHeight="-1.0" prefWidth="-1.0">
+      <children>
+        <Button id="newIssue" fx:id="newNEOCP" mnemonicParsing="false" onAction="#newNEOCPFired" text="Get Latest NEOCP" />
+        <Button fx:id="SkyXConnect" mnemonicParsing="false" onAction="#connectSkyXFired" text="Update from TheSkyX" />
+        <Button disable="true" mnemonicParsing="false" text="TheSkyX settings" />
+        <Button disable="true" mnemonicParsing="false" text="Run TheSkyX script" />
+      </children>
+    </HBox>
+    <VBox layoutY="61.0" prefHeight="311.0" prefWidth="99.0" spacing="25.0" AnchorPane.rightAnchor="10.0">
+      <children>
+        <Button id="Observations" fx:id="FindOrb" mnemonicParsing="false" onAction="#newFindOrbFired" prefHeight="78.0" prefWidth="115.0" text="Save Obsersavtions for FindOrb" textAlignment="LEFT" textOverrun="LEADING_WORD_ELLIPSIS" wrapText="true" />
+        <Button fx:id="MPCDB" disable="false" mnemonicParsing="false" onAction="#newLargeDBFired" prefHeight="92.0" prefWidth="100.0" text="Save in MPCORB format (for theSkyx Large Database)" wrapText="true" />
+        <Button fx:id="SmallDB" disable="false" mnemonicParsing="false" onAction="#newSmallDBFired" prefHeight="85.0" prefWidth="115.0" text="Save in SkyX Small Asteroid Database Format" wrapText="true" />
+      </children>
+      <padding>
+        <Insets />
+      </padding>
+    </VBox>
+    <TableView fx:id="NEOCPlist" editable="true" pickOnBounds="false" prefHeight="311.0" prefWidth="560.0" tableMenuButtonVisible="true" AnchorPane.bottomAnchor="45.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="130.0" AnchorPane.topAnchor="44.0">
+      <columns>
+        <TableColumn prefWidth="75.0" text="Tmp. Desig." fx:id="tmpdesigColumn" />
+        <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="41.0" text="Score" fx:id="scoreColumn" />
+        <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="97.0" text="Discovery" fx:id="discoveryColumn" />
+        <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="50.0" text="R.A." fx:id="raColumn" />
+        <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="47.0" text="Dec." fx:id="decColumn" />
+        <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="36.0" text="Alt." fx:id="altColumn" />
+        <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="29.0" text="Az." fx:id="azColumn" />
+        <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="30.0" text="V" fx:id="vColumn" />
+        <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="165.0" text="Updated" fx:id="updatedColumn" />
+        <TableColumn prefWidth="75.0" text="Note" visible="false" fx:id="noteColumn" />
+        <TableColumn prefWidth="75.0" text="NObs" visible="false" fx:id="observationsColumn" />
+        <TableColumn prefWidth="75.0" text="Arc" visible="false" fx:id="arcColumn" />
+        <TableColumn prefWidth="75.0" text="H" visible="false" fx:id="hColumn" />
+      </columns>
+    </TableView>
+    <HBox layoutX="10.0" prefHeight="-1.0" prefWidth="560.0" AnchorPane.bottomAnchor="14.0">
+      <children>
+        <Button mnemonicParsing="false" onAction="#handleDeleteNEO" prefWidth="84.99990844726562" text="Delete Line" />
+        <Label fx:id="Status" prefWidth="-1.0" text="">
+          <HBox.margin>
+            <Insets left="5.0" />
+          </HBox.margin>
+        </Label>
+      </children>
+    </HBox>
+  </children>
+  <stylesheets>
+    <URL value="@neocphelperfx.css" />
+  </stylesheets>
+</AnchorPane>

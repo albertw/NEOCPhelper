@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="232.0" prefWidth="282.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="neocphelper.SkySettingsController">
+  <children>
+    <GridPane layoutX="14.0" layoutY="14.0" prefHeight="177.0" prefWidth="256.0000999999975">
+      <children>
+        <Label text="TheSkyX Host" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+        <Label text="TheSkyX port" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+        <TextField prefWidth="200.0" text="127.0.0.1" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+        <TextField prefWidth="200.0" text="3040" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+        <Label text="# Exposure per target" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+        <TextField prefWidth="200.0" text="50" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+        <Label text="Exposure Time (s)" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+        <TextField prefWidth="200.0" text="20" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+        <Label disable="true" text="Delay between exposures" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+        <TextField disable="true" prefWidth="200.0" text="0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+      </children>
+      <columnConstraints>
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="146.0" minWidth="10.0" prefWidth="146.0" />
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="10.0" prefWidth="54.0" />
+      </columnConstraints>
+      <rowConstraints>
+        <RowConstraints maxHeight="47.0" minHeight="10.0" prefHeight="47.0" vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="47.0" minHeight="10.0" prefHeight="47.0" vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="47.0" minHeight="10.0" prefHeight="47.0" vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="47.0" minHeight="10.0" prefHeight="47.0" vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="47.0" minHeight="10.0" prefHeight="47.0" vgrow="SOMETIMES" />
+      </rowConstraints>
+    </GridPane>
+    <HBox layoutX="153.0" layoutY="200.0" prefHeight="-1.0" prefWidth="-1.0">
+      <children>
+        <Button mnemonicParsing="false" text="Apply" />
+        <Button mnemonicParsing="false" text="Cancel" />
+      </children>
+    </HBox>
+  </children>
+</AnchorPane>

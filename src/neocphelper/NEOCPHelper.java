@@ -1,7 +1,19 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/* 
+ * Copyright (C) 2014 Albert White <albert.white@gmail.com>
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
 package neocphelper;
 
@@ -13,8 +25,6 @@ import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
@@ -22,12 +32,10 @@ import java.util.regex.Pattern;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBoxBuilder;
@@ -35,7 +43,10 @@ import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import neocphelper.model.FindOrb;
+import neocphelper.model.MPCweb;
 import neocphelper.model.NEOCP;
+import neocphelper.model.SkyXDB;
 
 /**
  *
@@ -45,15 +56,14 @@ public class NEOCPHelper extends Application {
 
     private Stage primaryStage;
     private BorderPane rootLayout;
-    /**
-     * The data as an observable list of Persons.
-     */
+    private Boolean useSkyx;
     private ObservableList<NEOCP> neocpData = FXCollections.observableArrayList();
 
     /**
      * Constructor
      */
     public NEOCPHelper() {
+        useSkyx = false;
         // Add some sample data
         /*
          neocpData.add(new NEOCP("Ceres","","","","","","","","","",""));
@@ -63,296 +73,39 @@ public class NEOCPHelper extends Application {
          */
     }
 
+    public void setSkyX(Boolean flag){
+        useSkyx = true;
+    }
     public void printFindOrb() {
-        String nextLine;
-        URL url = null;
-        URLConnection urlConn = null;
-        InputStreamReader inStream = null;
-        BufferedReader buff = null;
-        String output = "";
-        try {
-
-            for (NEOCP neocp : neocpData) {
-
-                url = new URL(
-                        "http://scully.cfa.harvard.edu/cgi-bin/showobsorbs.cgi?Obj="
-                        + neocp.getTmpdesig() + "&obs=y");
-                urlConn = url.openConnection();
-                inStream = new InputStreamReader(
-                        urlConn.getInputStream());
-                buff = new BufferedReader(inStream);
-
-                while (true) {
-                    nextLine = buff.readLine();
-                    if (nextLine != null) {
-                        Pattern pattern = Pattern.compile("html");
-                        Matcher matcher = pattern.matcher(nextLine);
-                        if (matcher.find()) {
-                            continue;
-                        } else {
-                            output = output + nextLine + (System.getProperty("line.separator"));
-                        }
-                    } else {
-                        break;
-                    }
-                }
-            }
-            FileChooser fileChooser = new FileChooser();
-            FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
-            fileChooser.getExtensionFilters().add(extFilter);
-
-            fileChooser.setTitle("Save FindOrb Observation File");
-            fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
-
-            File file = fileChooser.showSaveDialog(primaryStage);
-
-            if (file != null) {
-                SaveFile(output, file);
-
-            }
-        } catch (MalformedURLException e) {
-            System.out.println("Please check the URL:"
-                    + e.toString());
-        } catch (IOException e1) {
-            System.out.println("Can't read  from the Internet: "
-                    + e1.toString());
-        }
+        FindOrb foobj = new FindOrb();
+        foobj.setNeocpData(neocpData);
+        String output = foobj.genFindOrb();
+        SaveFile(output, "Save FindOrb Observation File");
     }
 
     public void genSmallDB() {
-        String nextLine;
-        URL url = null;
-        URLConnection urlConn = null;
-        InputStreamReader inStream = null;
-        BufferedReader buff = null;
-        String output = "";
-        try {
-
-            for (NEOCP neocp : neocpData) {
-
-                url = new URL(
-                        "http://scully.cfa.harvard.edu/cgi-bin/showobsorbs.cgi?Obj="
-                        + neocp.getTmpdesig() + "&orb=y");
-                urlConn = url.openConnection();
-                inStream = new InputStreamReader(
-                        urlConn.getInputStream());
-                buff = new BufferedReader(inStream);
-
-                while (true) {
-                    nextLine = buff.readLine();
-                    if (nextLine != null) {
-                        Pattern pattern = Pattern.compile("NEOCPNomin");
-                        Matcher matcher = pattern.matcher(nextLine);
-                        if (matcher.find()) {
-                            //output = output + nextLine + (System.getProperty("line.separator"));;
-
-                            Pattern splitPattern = Pattern.compile("^(.{7}) "
-                                    + "(.{4})  (.{4})  (.{5}) (.{9})  (.{9})  "
-                                    + "(.{9})  (.{9})  (.{9})  (.{10})  "
-                                    + "(.{10})");
-
-                            Matcher m = splitPattern.matcher(nextLine);
-                            while (m.find()) {
-                                String TmpDesig = m.group(1).trim();
-                                Float H = Float.parseFloat(m.group(2).trim());
-                                Float G = Float.parseFloat(m.group(3).trim());
-                                String Epoch = m.group(4).trim();
-                                Float M = Float.parseFloat(m.group(5).trim());
-                                Float Peri = Float.parseFloat(m.group(6).trim());
-                                Float Node = Float.parseFloat(m.group(7).trim());
-                                Float Incl = Float.parseFloat(m.group(8).trim());
-                                Float e = Float.parseFloat(m.group(9).trim());
-                                Float n = Float.parseFloat(m.group(10).trim());
-                                Float a = Float.parseFloat(m.group(11).trim());
-                                output = output + String.format("  %-19.19s|%-14.14s|%8.6f  "
-                                        + "|%8f|%8.4f|%8.4f |%8.4f| 2000|"
-                                        + "%9.4f  |%5.2f|%-5.2f|   0.00" + (System.getProperty("line.separator")), TmpDesig,
-                                        unpackEpoch(Epoch), e, a, Incl, Node, Peri, M,
-                                        H, G);
-                            }
-                            break;  // We're only taking the first orbit.
-                            // So no point continuing to parse.
-                        }
-                    } else {
-                        break;
-                    }
-                }
-            }
-
-            FileChooser fileChooser = new FileChooser();
-            FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
-            fileChooser.getExtensionFilters().add(extFilter);
-
-            fileChooser.setTitle("Save TheSkyX Small Asteroid DB File");
-            fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
-
-            File file = fileChooser.showSaveDialog(primaryStage);
-
-            if (file != null) {
-                SaveFile(output, file);
-
-            }
-
-        } catch (MalformedURLException e) {
-            System.out.println("Please check the URL:"
-                    + e.toString());
-        } catch (IOException e1) {
-            System.out.println("Can't read  from the Internet: "
-                    + e1.toString());
-        }
-
+        SkyXDB skyxobj = new SkyXDB();
+        skyxobj.setNeocpData(neocpData);
+        String output = skyxobj.genSmallDB();
+        SaveFile(output, "Save TheSkyX Small Asteroid DB File");
     }
 
     public void genLargeDB() {
-        String nextLine;
-        URL url = null;
-        URLConnection urlConn = null;
-        InputStreamReader inStream = null;
-        BufferedReader buff = null;
-        String output = "";
-        try {
-
-            for (NEOCP neocp : neocpData) {
-
-                url = new URL(
-                        "http://scully.cfa.harvard.edu/cgi-bin/showobsorbs.cgi?Obj="
-                        + neocp.getTmpdesig() + "&orb=y");
-                urlConn = url.openConnection();
-                inStream = new InputStreamReader(
-                        urlConn.getInputStream());
-                buff = new BufferedReader(inStream);
-
-                while (true) {
-                    nextLine = buff.readLine();
-                    if (nextLine != null) {
-                        Pattern pattern = Pattern.compile("NEOCPNomin");
-                        Matcher matcher = pattern.matcher(nextLine);
-                        if (matcher.find()) {
-                            //output = output + nextLine + (System.getProperty("line.separator"));;
-
-                            Pattern splitPattern = Pattern.compile("^(.{7}) "
-                                    + "(.{4})  (.{4})  (.{5}) (.{9})  (.{9})  "
-                                    + "(.{9})  (.{9})  (.{9})  (.{10})  "
-                                    + "(.{10})");
-
-                            Matcher m = splitPattern.matcher(nextLine);
-                            while (m.find()) {
-                                String TmpDesig = m.group(1).trim();
-                                Float H = Float.parseFloat(m.group(2).trim());
-                                Float G = Float.parseFloat(m.group(3).trim());
-                                String Epoch = m.group(4).trim();
-                                Float M = Float.parseFloat(m.group(5).trim());
-                                Float Peri = Float.parseFloat(m.group(6).trim());
-                                Float Node = Float.parseFloat(m.group(7).trim());
-                                Float Incl = Float.parseFloat(m.group(8).trim());
-                                Float e = Float.parseFloat(m.group(9).trim());
-                                Float n = Float.parseFloat(m.group(10).trim());
-                                Float a = Float.parseFloat(m.group(11).trim());
-
-                                output = output + String.format("%7s %5.2f %5.2f %5s "
-                                        + "%9.5f  %9.5f  %9.5f  %9.5f  %9.7f %11.8f %11.7f"
-                                        + "  0 NEOCP        10   1    1 days "
-                                        + "0.00         Z72GUESS   0000    %-28s     "
-                                        + (System.getProperty("line.separator")), TmpDesig,
-                                        H, G, Epoch, M, Peri, Node, Incl,
-                                        e, n, a, TmpDesig);
-                            }
-                            break;  // We're only taking the first orbit.
-                            // So no point continuing to parse.
-                        }
-                    } else {
-                        break;
-                    }
-                }
-            }
-
-            FileChooser fileChooser = new FileChooser();
-            FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
-            fileChooser.getExtensionFilters().add(extFilter);
-
-            fileChooser.setTitle("Save TheSkyX Small Asteroid DB File");
-            fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
-
-            File file = fileChooser.showSaveDialog(primaryStage);
-
-            if (file != null) {
-                SaveFile(output, file);
-
-            }
-
-        } catch (MalformedURLException e) {
-            System.out.println("Please check the URL:"
-                    + e.toString());
-        } catch (IOException e1) {
-            System.out.println("Can't read  from the Internet: "
-                    + e1.toString());
-        }
-
+        SkyXDB skyxobj = new SkyXDB();
+        skyxobj.setNeocpData(neocpData);
+        String output = skyxobj.genLargeDB();
+        SaveFile(output, "Save TheSkyX Large Asteroid DB File");
     }
 
     public void getNEOCP() {
-
         neocpData.clear();
-
-        String nextLine;
-        String failedLines = "";
-        URL url = null;
-        URLConnection urlConn = null;
-        InputStreamReader inStream = null;
-        BufferedReader buff = null;
-        try {
-            // Create the URL obect that points
-            // at the default file index.html
-            url = new URL("http://www.minorplanetcenter.net/iau/NEO/neocp.txt");
-            urlConn = url.openConnection();
-            inStream = new InputStreamReader(
-                    urlConn.getInputStream());
-            buff = new BufferedReader(inStream);
-
-            // Read and print the lines from index.html
-            while (true) {
-                nextLine = buff.readLine();
-                if (nextLine != null) {
-                    System.out.println(nextLine);
-                    Pattern splitPattern = Pattern.compile("^(.{7}) (.{3}) "
-                            + "(.{12}) (.{8}) (.{8}) (.{4}) (.{21})  (.{7}) "
-                            + "(.{3})  (.{5}) (.{4})");
-                    Matcher m = splitPattern.matcher(nextLine);
-                    if (m.find()) {
-
-                        int m2 = Integer.parseInt(m.group(2).trim());
-                        Float m4 = Float.parseFloat(m.group(4).trim());
-                        Float m6 = Float.parseFloat(m.group(6).trim());
-                        int m9 = Integer.parseInt(m.group(9).trim());
-                        Float m10 = Float.parseFloat(m.group(10).trim());
-                        Float m11 = Float.parseFloat(m.group(11).trim());
-                        neocpData.add(new NEOCP(m.group(1).trim(),
-                                m2, m.group(3).trim(),
-                                m4, m.group(5).trim(),
-                                m6, m.group(7).trim(),
-                                m.group(8).trim(), m9,
-                                m10, m11));
-                    } else {
-                        failedLines = failedLines + nextLine + System.getProperty("line.separator");
-                    }
-
-                } else {
-                    break;
-                }
-            }
-            if (failedLines != "") {
-                Debug("The following lines did not parse correctly:" + failedLines);
-            }
-        } catch (MalformedURLException e) {
-            System.out.println("Please check the URL:"
-                    + e.toString());
-            Debug("Please check the URL:"
-                    + e.toString());
-        } catch (IOException e1) {
-            System.out.println("Can't read  from the Internet: "
-                    + e1.toString());
-            Debug("Can't read  from the Internet: "
-                    + e1.toString());
+        MPCweb mpc = new MPCweb();
+        neocpData = mpc.getneocpData(neocpData);
+    }
+    
+    public void updateNEOCP() throws IOException{
+        for (NEOCP neocp : neocpData){
+            neocp.setaltaz();
         }
     }
 
@@ -373,7 +126,7 @@ public class NEOCPHelper extends Application {
         try {
             // Load the root layout from the fxml file
             FXMLLoader loader = new FXMLLoader(NEOCPHelper.class
-                    .getResource("RootLayout.fxml"));
+                    .getResource("view/RootLayout.fxml"));
             rootLayout = (BorderPane) loader.load();
             Scene scene = new Scene(rootLayout);
 
@@ -404,12 +157,11 @@ public class NEOCPHelper extends Application {
     /**
      * Shows the person overview scene.
      */
-    public
-            void showNEOCPOverview() {
+    public void showNEOCPOverview() {
         try {
             // Load the fxml file and set into the center of the main layout
             FXMLLoader loader = new FXMLLoader(NEOCPHelper.class
-                    .getResource("NEOCPHelper.fxml"));
+                    .getResource("view/NEOCPHelper.fxml"));
             AnchorPane overviewPage = (AnchorPane) loader.load();
 
             rootLayout.setCenter(overviewPage);
@@ -425,64 +177,28 @@ public class NEOCPHelper extends Application {
         }
     }
 
-    private void SaveFile(String content, File file) {
+    private void SaveFile(String content, String title) {
+
+        FileChooser fileChooser = new FileChooser();
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
+        fileChooser.getExtensionFilters().add(extFilter);
+
+        fileChooser.setTitle(title);
+        fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+
+        File file = fileChooser.showSaveDialog(primaryStage);
+
         try {
             FileWriter fileWriter = null;
-
             fileWriter = new FileWriter(file);
             fileWriter.write(content);
             fileWriter.close();
+
         } catch (IOException ex) {
-            Logger.getLogger(NEOCPHelper.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(NEOCPHelper.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
 
-    }
-
-    public String unpackEpoch(String packed) {
-        String Year = "0000";
-        String Month = "00";
-        String Day = "00";
-        Map<String, String> map = new HashMap<String, String>();
-        map.put("1", "01");
-        map.put("2", "02");
-        map.put("3", "03");
-        map.put("4", "04");
-        map.put("5", "05");
-        map.put("6", "06");
-        map.put("7", "07");
-        map.put("8", "08");
-        map.put("9", "09");
-        map.put("A", "10");
-        map.put("B", "11");
-        map.put("C", "12");
-        map.put("D", "13");
-        map.put("E", "14");
-        map.put("F", "15");
-        map.put("G", "16");
-        map.put("H", "17");
-        map.put("I", "18");
-        map.put("J", "19");
-        map.put("K", "20");
-        map.put("L", "21");
-        map.put("M", "22");
-        map.put("N", "23");
-        map.put("O", "24");
-        map.put("P", "25");
-        map.put("Q", "26");
-        map.put("R", "27");
-        map.put("S", "28");
-        map.put("T", "29");
-        map.put("U", "30");
-        map.put("V", "31");
-
-        Pattern splitPattern = Pattern.compile("(.)(..)(.)(.)");
-        Matcher m = splitPattern.matcher(packed);
-        if (m.find()) {
-            Year = (map.get(m.group(1).trim()) + m.group(2).trim());
-            Month = (map.get(m.group(3).trim()));
-            Day = (map.get(m.group(4).trim()));
-        }
-        return String.format("%s %s %s" + ".000", Year, Month, Day);
     }
 
     public void Debug(String msg) {
