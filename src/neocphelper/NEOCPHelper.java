@@ -17,18 +17,11 @@
  */
 package neocphelper;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -46,6 +39,7 @@ import javafx.stage.Stage;
 import neocphelper.model.FindOrb;
 import neocphelper.model.MPCweb;
 import neocphelper.model.NEOCP;
+import neocphelper.model.SkyXConnection;
 import neocphelper.model.SkyXDB;
 
 /**
@@ -58,6 +52,7 @@ public class NEOCPHelper extends Application {
     private BorderPane rootLayout;
     private Boolean useSkyx;
     private ObservableList<NEOCP> neocpData = FXCollections.observableArrayList();
+    private final SkyXConnection skyxconn = new SkyXConnection();
 
     /**
      * Constructor
@@ -73,9 +68,10 @@ public class NEOCPHelper extends Application {
          */
     }
 
-    public void setSkyX(Boolean flag){
+    public void setSkyX(Boolean flag) {
         useSkyx = true;
     }
+
     public void printFindOrb() {
         FindOrb foobj = new FindOrb();
         foobj.setNeocpData(neocpData);
@@ -102,10 +98,13 @@ public class NEOCPHelper extends Application {
         MPCweb mpc = new MPCweb();
         neocpData = mpc.getneocpData(neocpData);
     }
-    
-    public void updateNEOCP() throws IOException{
-        for (NEOCP neocp : neocpData){
-            neocp.setaltaz();
+
+    public SkyXConnection getskyxconn(){
+        return this.skyxconn;
+    }
+    public void updateNEOCP() throws IOException {
+        for (NEOCP neocp : neocpData) {
+            neocp.setaltaz(skyxconn);
         }
     }
 
@@ -118,6 +117,10 @@ public class NEOCPHelper extends Application {
         return neocpData;
     }
 
+    /**
+     *
+     * @param primaryStage
+     */
     @Override
     public void start(Stage primaryStage) {
         this.primaryStage = primaryStage;

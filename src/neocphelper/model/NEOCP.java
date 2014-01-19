@@ -39,6 +39,13 @@ public class NEOCP {
     private Float arc;
     private Float h;
 
+    private Float skyxra;
+    private String skyxdec;
+    private Double rarate;
+    private Double decrate;
+    private Double totalrate;
+    private Double pa;
+    
     private Float g;
     private String epoch;
     private Float m;
@@ -87,12 +94,16 @@ public class NEOCP {
 
     }
 
-    public void setaltaz() throws IOException {
-        SkyXConnection skyxcon = new SkyXConnection();
-        try{
-            this.alt = (int) Float.parseFloat(skyxcon.getAlt(this.tmpdesig));
-            this.az = (int) Float.parseFloat(skyxcon.getAz(this.tmpdesig));
-        } catch (NumberFormatException | NullPointerException f){
+    public void setaltaz(SkyXConnection skyxconn) throws IOException {
+        //SkyXConnection skyxcon = new SkyXConnection();
+        try {
+            this.alt = (int) Float.parseFloat(skyxconn.getAlt(this.tmpdesig));
+            this.az = (int) Float.parseFloat(skyxconn.getAz(this.tmpdesig));
+            System.out.println(this.tmpdesig + " "
+                    + skyxconn.getTotalRate(this.tmpdesig)
+                    + " " + skyxconn.getPA(this.tmpdesig));
+
+        } catch (NumberFormatException | NullPointerException f) {
             // Just means we didnt get a value back from TheSkyX
         }
     }

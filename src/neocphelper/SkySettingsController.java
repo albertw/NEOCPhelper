@@ -20,6 +20,7 @@ package neocphelper;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 
 /**
  * FXML Controller class
@@ -38,4 +39,15 @@ public class SkySettingsController {
 	private TextField exposuretimeField;
 	@FXML
 	private TextField expdelayField;
+        
+	private Stage dialogStage;
+	
+        
+	/**
+	 * Sets the stage of this dialog.
+	 * @param dialogStage
+	 */
+	public void setDialogStage(Stage dialogStage) {
+		this.dialogStage = dialogStage;
+	}
 }

@@ -80,8 +80,82 @@ public class SkyXConnection {
         return (send(command));
     }
 
-    public String getAlt(String Target) throws IOException {
+    public String GetDec2000(String Target) throws IOException {
+        String command = "var Target = \"" + Target + "\"; "
+                + "var TargetRA = 0;"
+                + "var TargetDec = 0;"
+                + "var Out = \"\";"
+                + "var err;"
+                + "sky6StarChart.LASTCOMERROR = 0;"
+                + "sky6StarChart.Find(Target);"
+                + "err = sky6StarChart.LASTCOMERROR;"
+                + "if (err != 0) {"
+                + "            Out = Target + \" not found.\"        "
+                + "} else {"
+                + "            sky6ObjectInformation.Property(57);"
+                + "            TargetRA = sky6ObjectInformation.ObjInfoPropOut;"
+                + "            Out = String(TargetRA); }";
+      String result = send(command);
+        Float x;
+        try {
+            Float.parseFloat(result);
+            return (result);
+        } catch (NumberFormatException r) {
+            return (null);
+        }
+    }
+    
+    public String GetDecRate(String Target) throws IOException {
+        String command = "var Target = \"" + Target + "\"; "
+                + "var TargetRA = 0;"
+                + "var TargetDec = 0;"
+                + "var Out = \"\";"
+                + "var err;"
+                + "sky6StarChart.LASTCOMERROR = 0;"
+                + "sky6StarChart.Find(Target);"
+                + "err = sky6StarChart.LASTCOMERROR;"
+                + "if (err != 0) {"
+                + "            Out = Target + \" not found.\"        "
+                + "} else {"
+                + "            sky6ObjectInformation.Property(78);"
+                + "            TargetRA = sky6ObjectInformation.ObjInfoPropOut;"
+                + "            Out = String(TargetRA); }";
+        String result = send(command);
+        Float x;
+        try {
+            Float.parseFloat(result);
+            return (result);
+        } catch (NumberFormatException r) {
+            return (null);
+        }
+    }
 
+    public String GetRARate(String Target) throws IOException {
+        String command = "var Target = \"" + Target + "\"; "
+                + "var TargetRA = 0;"
+                + "var TargetDec = 0;"
+                + "var Out = \"\";"
+                + "var err;"
+                + "sky6StarChart.LASTCOMERROR = 0;"
+                + "sky6StarChart.Find(Target);"
+                + "err = sky6StarChart.LASTCOMERROR;"
+                + "if (err != 0) {"
+                + "            Out = Target + \" not found.\"        "
+                + "} else {"
+                + "            sky6ObjectInformation.Property(77);"
+                + "            TargetRA = sky6ObjectInformation.ObjInfoPropOut;"
+                + "            Out = String(TargetRA); }";
+        String result = send(command);
+        Float x;
+        try {
+            Float.parseFloat(result);
+            return (result);
+        } catch (NumberFormatException r) {
+            return (null);
+        }
+    }
+
+    public String getAlt(String Target) throws IOException {
         String command = "var Target = \"" + Target + "\"; "
                 + "var TargetRA = 0;var TargetDec = 0;        var Out = \"\";"
                 + "var err;"
@@ -97,16 +171,15 @@ public class SkyXConnection {
         //System.out.println(command);
         String result = send(command);
         Float x;
-        try{
+        try {
             Float.parseFloat(result);
-            return(result);
-        } catch( NumberFormatException r){
-            return(null);
+            return (result);
+        } catch (NumberFormatException r) {
+            return (null);
         }
     }
 
     public String getAz(String Target) throws IOException {
-
         String command = "var Target = \"" + Target + "\"; "
                 + "var TargetRA = 0;var TargetDec = 0;        var Out = \"\";"
                 + "var err;"
@@ -120,11 +193,11 @@ public class SkyXConnection {
                 + "            TargetDec = sky6ObjectInformation.ObjInfoPropOut;"
                 + "            Out = String(TargetDec);        }";
         String result = send(command);
-        try{
+        try {
             Float.parseFloat(result);
-            return(result);
-        } catch( NumberFormatException r){
-            return(null);
+            return (result);
+        } catch (NumberFormatException r) {
+            return (null);
         }
     }
 
@@ -181,12 +254,64 @@ public class SkyXConnection {
         return radeg * rasign + "° " + ramin + "\' " + String.format("%2.2f", rasecfrac) + "\"";
     }
 
+    public Double getPA(String target) throws IOException{
+        /* Basically :
+        Sin(A)/Sin(a)=Sin(C)/sin(c)
+        */
+        Double ra = Double.parseDouble(GetRA2000(target));
+        Double rarate = Double.parseDouble(GetRARate(target));
+        Double dec = Double.parseDouble(GetDec2000(target));
+        Double decrate = Double.parseDouble(GetDecRate(target));
+        Double rate = getTotalRate(target)/60;
+        
+        Double a = Math.toRadians(90-(dec+decrate));
+        Double C = Math.toRadians(rarate);
+        Double c = Math.toRadians(rate);
+       System.out.println(target +" a:"+a+" c:" +c + " C:" +C);
+        return(Math.toDegrees(Math.asin(
+                Math.sin(C)*Math.sin(a)/Math.sin(c))));
+    }
+    
+    public Double getTotalRate(String target) throws IOException {
+        /*
+        Based on 'Practical Astronomy with your calculator' (Duffet-Smith 1988) 
+        p51, but it's just a cosine rule of spherical trig. Simply 
+        sqrt(ra^2+dec^2) wont work, you need spherical trig not planar!
+        */
+        Double rarateR = Math.toRadians(Double.parseDouble(GetRARate(target)));
+        Double decrate = Double.parseDouble(GetDecRate(target));
+        Double dec = Double.parseDouble(GetDec2000(target));
+        Double decR = Math.toRadians(Double.parseDouble(GetDec2000(target)));
+        Double dec2R = Math.toRadians(dec+decrate);
+        Double result = Math.toDegrees(Math.acos(
+                Math.sin(decR)*Math.sin(dec2R)+
+                Math.cos(decR)*Math.cos(dec2R)*Math.cos(rarateR)));         
+        
+        return (result*60);
+    }
+
     public String SetChartFOV(String FOV) {
         return ("");
     }
 
     public String GetChartFOV(String FOV) {
         return ("");
+    }
+
+    public String getHost() {
+        return host;
+    }
+
+    public void setHost(String host) {
+        this.host = host;
+    }
+
+    public Integer getPort() {
+        return port;
+    }
+
+    public void setPort(Integer port) {
+        this.port = port;
     }
 
 }

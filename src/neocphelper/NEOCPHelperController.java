@@ -18,8 +18,6 @@
 package neocphelper;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -140,9 +138,9 @@ public class NEOCPHelperController {
 
     @FXML
     public void connectSkyXFired(ActionEvent event) throws InterruptedException {
-        SkyXConnection skyxcon = new SkyXConnection();
+        SkyXConnection skyxconn = nEOCPHelper.getskyxconn();
         try {
-            skyxcon.testconnection();
+            skyxconn.testconnection();
             Status.setText("Updated available data from TheSkyX.");
             nEOCPHelper.setSkyX(true);
             nEOCPHelper.updateNEOCP();
@@ -177,18 +175,9 @@ public class NEOCPHelperController {
         System.out.println(indeces);
         for (int index : indeces) {
             System.out.println(index);
-            Status.setText("Deleted NEO " + NEOCPlist.getItems().get(index).getTmpdesig()+" (known bug with multiple deletes)");
+            Status.setText("Deleted NEO " + NEOCPlist.getItems().get(index).getTmpdesig() + " (known bug with multiple deletes)");
             NEOCPlist.getItems().remove(index);
         }
-        /*
-         int selectedIndex = NEOCPlist.getSelectionModel().getSelectedIndex();
-         if (selectedIndex >= 0) {
-         System.out.println(selectedIndex);
-         Status.setText("Deleted NEO " + NEOCPlist.getItems().get(selectedIndex).getTmpdesig());
-         NEOCPlist.getItems().remove(selectedIndex);
-         } else {
-         }
-         */
     }
 
     /**
