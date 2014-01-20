@@ -53,7 +53,6 @@ public class MPCweb {
             while (true) {
                 nextLine = buff.readLine();
                 if (nextLine != null) {
-                    System.out.println(nextLine);
                     Pattern splitPattern = Pattern.compile("^(.{7}) (.{3}) "
                             + "(.{12}) (.{8}) (.{8}) (.{4}) (.{21})  (.{7}) "
                             + "(.{3})  (.{5}) (.{4})");

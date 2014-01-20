@@ -20,8 +20,6 @@ package neocphelper.model;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -98,29 +96,14 @@ public class NEOCP {
 
             String lines[] = lskyxdata.split("\\r?\\n");
             for (String line : lines) {
-                //System.out.println("populateFromSkyX " + line + "|");
                 Pattern patt = Pattern.compile("^(\\w+):([\\d\\.\\-]+)");
                 Matcher match = patt.matcher(line);
                 while (match.find()) {
-
                     String vari = match.group(1);
                     String capitol = Character.toString(vari.charAt(0)).toUpperCase();
                     vari = capitol + vari.substring(1);
                     Method meth = skyxdata.getClass().getDeclaredMethod("set" + vari, Double.class);
                     meth.invoke(skyxdata, Double.parseDouble(match.group(2)));
-
-                    //System.out.println(vari);
-
-                    /*
-                     Method[] meth = skyxdata.getClass().getDeclaredMethods();
-                     for (Method me : meth) {
-                     System.out.println("class has:" +me.getName());
-                     String vari = match.group(1);
-                     String capitol = Character.toString(vari.charAt(0)).toUpperCase();
-                     vari = capitol + vari.substring(1);
-                     System.out.println("      has:" +"set" + vari);
-                     }
-                     */
                 }
             }
         }
@@ -220,11 +203,10 @@ public class NEOCP {
             Double aa = Math.toRadians(90 - (dec1 + decrate));
             Double C = Math.toRadians(rarate);
             Double c = Math.toRadians(rate);
-            //System.out.println(target +" a:"+a+" c:" +c + " C:" +C);
             Double ans = (Math.toDegrees(Math.asin(
                     Math.sin(C) * Math.sin(aa) / Math.sin(c))));
-            if (ans < 0){
-                ans=360+ans;
+            if (ans < 0) {
+                ans = 360 + ans;
             }
             return (Math.round((ans) * 100.0) / 100.0);
 
@@ -239,7 +221,7 @@ public class NEOCP {
          p51, but it's just a cosine rule of spherical trig. Simply 
          sqrt(ra^2+dec^2) wont work, you need spherical trig not planar!
          */
-        
+
         if (this.skyxdata.getSk6ObjInfoProp_RA_RATE_ASPERSEC() != null) {
             Double rarateR = Math.toRadians(this.skyxdata.getSk6ObjInfoProp_RA_RATE_ASPERSEC());
             Double decrate = this.skyxdata.getSk6ObjInfoProp_DEC_RATE_ASPERSEC();
@@ -249,7 +231,6 @@ public class NEOCP {
             Double result = Math.toDegrees(Math.acos(
                     Math.sin(dec1R) * Math.sin(dec2R)
                     + Math.cos(dec1R) * Math.cos(dec2R) * Math.cos(rarateR)));
-System.out.println(this.tmpdesig+" rate "+result);
             return (Math.round((result * 60) * 100.0) / 100.0);
 
         } else {
@@ -260,7 +241,6 @@ System.out.println(this.tmpdesig+" rate "+result);
     public Double getAlt() {
         if (this.skyxdata.getSk6ObjInfoProp_ALT() != null) {
             return (Math.round(this.skyxdata.getSk6ObjInfoProp_ALT() * 100.0) / 100.0);
-
         } else {
             return (this.skyxdata.getSk6ObjInfoProp_ALT());
         }
@@ -269,7 +249,6 @@ System.out.println(this.tmpdesig+" rate "+result);
     public Double getAz() {
         if (this.skyxdata.getSk6ObjInfoProp_AZM() != null) {
             return (Math.round(this.skyxdata.getSk6ObjInfoProp_AZM() * 100.0) / 100.0);
-
         } else {
             return (this.skyxdata.getSk6ObjInfoProp_AZM());
         }

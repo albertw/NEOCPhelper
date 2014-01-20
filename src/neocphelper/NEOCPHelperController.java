@@ -28,6 +28,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.Tooltip;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.paint.Paint;
 import neocphelper.model.NEOCP;
@@ -120,6 +121,8 @@ public class NEOCPHelperController {
         // Auto resize columns
         //NEOCPlist.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         NEOCPlist.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        SkyXConnect.setTooltip(new Tooltip("Objects must be exported and loaded into \nTheSkyX Small Asteroid Database for this to work."));
+        newNEOCP.setTooltip(new Tooltip("Download the latest data from the Minor Planet Center\nNEO Confirmation Page. Caution: May contain comets!"));
     }
 
     /**

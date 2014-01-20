@@ -49,7 +49,6 @@ public class SkyXConnection {
     public void testconnection() throws IOException {
         connect();
         disconnect();
-
     }
 
     public void connect() throws IOException {
@@ -97,7 +96,6 @@ public class SkyXConnection {
                 + "sk6ObjInfoProp_RA_RATE_ASPERSEC:\"+String(Target77)+\"\\n"
                 + "sk6ObjInfoProp_DEC_RATE_ASPERSEC:\"+String(Target78);"
                 + "}";
-        //System.out.println(command);
         return (send(command));
     }
 
@@ -189,7 +187,6 @@ public class SkyXConnection {
                 + "            sky6ObjectInformation.Property(59);"
                 + "            TargetDec = sky6ObjectInformation.ObjInfoPropOut;"
                 + "            Out = String(TargetDec);        }";
-        //System.out.println(command);
         String result = send(command);
         Float x;
         try {
@@ -279,7 +276,6 @@ public class SkyXConnection {
         /* Basically :
         Sin(A)/Sin(a)=Sin(C)/sin(c)
         */
-//        Double ra = Double.parseDouble(GetRA2000(target));
         Double rarate = Double.parseDouble(GetRARate(target));
         Double dec = Double.parseDouble(GetDec2000(target));
         Double decrate = Double.parseDouble(GetDecRate(target));
@@ -288,7 +284,6 @@ public class SkyXConnection {
         Double a = Math.toRadians(90-(dec+decrate));
         Double C = Math.toRadians(rarate);
         Double c = Math.toRadians(rate);
-       System.out.println(target +" a:"+a+" c:" +c + " C:" +C);
         return(Math.toDegrees(Math.asin(
                 Math.sin(C)*Math.sin(a)/Math.sin(c))));
     }

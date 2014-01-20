@@ -31,8 +31,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
       <children>
         <Button id="newIssue" fx:id="newNEOCP" mnemonicParsing="false" onAction="#newNEOCPFired" text="Get Latest NEOCP" />
         <Button fx:id="SkyXConnect" mnemonicParsing="false" onAction="#connectSkyXFired" text="Update from TheSkyX" />
-        <Button disable="true" mnemonicParsing="false" text="TheSkyX settings" />
-        <Button disable="true" mnemonicParsing="false" text="Run TheSkyX script" />
       </children>
     </HBox>
     <VBox layoutY="61.0" prefHeight="311.0" prefWidth="99.0" spacing="25.0" AnchorPane.rightAnchor="10.0">

@@ -15,7 +15,6 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-
 package neocphelper;
 
 import javafx.fxml.FXML;
@@ -29,25 +28,25 @@ import javafx.stage.Stage;
  */
 public class SkySettingsController {
 
-    	@FXML
-	private TextField skyXhostField;
-	@FXML
-	private TextField skyXportField;
-	@FXML
-	private TextField numexposuresField;
-	@FXML
-	private TextField exposuretimeField;
-	@FXML
-	private TextField expdelayField;
-        
-	private Stage dialogStage;
-	
-        
-	/**
-	 * Sets the stage of this dialog.
-	 * @param dialogStage
-	 */
-	public void setDialogStage(Stage dialogStage) {
-		this.dialogStage = dialogStage;
-	}
+    @FXML
+    private TextField skyXhostField;
+    @FXML
+    private TextField skyXportField;
+    @FXML
+    private TextField numexposuresField;
+    @FXML
+    private TextField exposuretimeField;
+    @FXML
+    private TextField expdelayField;
+
+    private Stage dialogStage;
+
+    /**
+     * Sets the stage of this dialog.
+     *
+     * @param dialogStage
+     */
+    public void setDialogStage(Stage dialogStage) {
+        this.dialogStage = dialogStage;
+    }
 }

@@ -100,18 +100,19 @@ public class NEOCPHelper extends Application {
         neocpData = mpc.getneocpData(neocpData);
     }
 
-    public SkyXConnection getskyxconn(){
+    public SkyXConnection getskyxconn() {
         return this.skyxconn;
     }
+
     public void updateNEOCP() throws IOException, ClassNotFoundException {
         for (NEOCP neocp : neocpData) {
             try {
                 neocp.populateFromSkyX(skyxconn);
-            } catch (    InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException ex) {
+            } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException ex) {
                 Logger.getLogger(NEOCPHelper.class.getName()).log(Level.SEVERE, null, ex);
             }
-        
-        System.out.println(neocp.getAlt());
+
+            System.out.println(neocp.getAlt());
         }
     }
 
