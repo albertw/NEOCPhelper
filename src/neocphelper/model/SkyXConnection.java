@@ -62,10 +62,14 @@ public class SkyXConnection {
         this.sock.close();
     }
 
-    public String GetRA2000(String Target) throws IOException {
+    public String sky6ObjectInformation(String Target) throws IOException {
         String command = "var Target = \"" + Target + "\"; "
-                + "var TargetRA = 0;"
-                + "var TargetDec = 0;"
+                + "var Target56 = 0;"
+                + "var Target57 = 0;"
+                + "var Target58 = 0;"
+                + "var Target59 = 0;"
+                + "var Target77 = 0;"
+                + "var Target78 = 0;"
                 + "var Out = \"\";"
                 + "var err;"
                 + "sky6StarChart.LASTCOMERROR = 0;"
@@ -75,8 +79,25 @@ public class SkyXConnection {
                 + "            Out = Target + \" not found.\"        "
                 + "} else {"
                 + "            sky6ObjectInformation.Property(56);"
-                + "            TargetRA = sky6ObjectInformation.ObjInfoPropOut;"
-                + "            Out = String(TargetRA); }";
+                + "            Target56 = sky6ObjectInformation.ObjInfoPropOut;"
+                + "            sky6ObjectInformation.Property(57);"
+                + "            Target57 = sky6ObjectInformation.ObjInfoPropOut;"
+                + "            sky6ObjectInformation.Property(58);"
+                + "            Target58 = sky6ObjectInformation.ObjInfoPropOut;"
+                + "            sky6ObjectInformation.Property(59);"
+                + "            Target59 = sky6ObjectInformation.ObjInfoPropOut;"
+                + "            sky6ObjectInformation.Property(77);"
+                + "            Target77 = sky6ObjectInformation.ObjInfoPropOut;"
+                + "            sky6ObjectInformation.Property(78);"
+                + "            Target78 = sky6ObjectInformation.ObjInfoPropOut;"
+                + "            Out = \"sk6ObjInfoProp_RA_2000:\"+String(Target56)+\"\\n"
+                + "sk6ObjInfoProp_DEC_2000:\"+String(Target57)+\"\\n"
+                + "sk6ObjInfoProp_AZM:\"+String(Target58)+\"\\n"
+                + "sk6ObjInfoProp_ALT:\"+String(Target59)+\"\\n"
+                + "sk6ObjInfoProp_RA_RATE_ASPERSEC:\"+String(Target77)+\"\\n"
+                + "sk6ObjInfoProp_DEC_RATE_ASPERSEC:\"+String(Target78);"
+                + "}";
+        //System.out.println(command);
         return (send(command));
     }
 
@@ -258,7 +279,7 @@ public class SkyXConnection {
         /* Basically :
         Sin(A)/Sin(a)=Sin(C)/sin(c)
         */
-        Double ra = Double.parseDouble(GetRA2000(target));
+//        Double ra = Double.parseDouble(GetRA2000(target));
         Double rarate = Double.parseDouble(GetRARate(target));
         Double dec = Double.parseDouble(GetDec2000(target));
         Double decrate = Double.parseDouble(GetDecRate(target));

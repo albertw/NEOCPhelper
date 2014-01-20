@@ -52,9 +52,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="97.0" text="Discovery" fx:id="discoveryColumn" />
         <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="50.0" text="R.A." fx:id="raColumn" />
         <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="47.0" text="Dec." fx:id="decColumn" />
-        <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="36.0" text="Alt." fx:id="altColumn" />
-        <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="29.0" text="Az." fx:id="azColumn" />
+        <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="43.0" text="Alt." fx:id="altColumn" />
+        <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="42.0" text="Az." fx:id="azColumn" />
         <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="30.0" text="V" fx:id="vColumn" />
+        <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="40.0" text="Rate" fx:id="rateColumn" />
+        <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="54.0" text="PA" fx:id="paColumn" />
         <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="165.0" text="Updated" fx:id="updatedColumn" />
         <TableColumn prefWidth="75.0" text="Note" visible="false" fx:id="noteColumn" />
         <TableColumn prefWidth="75.0" text="NObs" visible="false" fx:id="observationsColumn" />

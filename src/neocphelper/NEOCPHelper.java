@@ -20,6 +20,7 @@ package neocphelper;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Application;
@@ -102,9 +103,15 @@ public class NEOCPHelper extends Application {
     public SkyXConnection getskyxconn(){
         return this.skyxconn;
     }
-    public void updateNEOCP() throws IOException {
+    public void updateNEOCP() throws IOException, ClassNotFoundException {
         for (NEOCP neocp : neocpData) {
-            neocp.setaltaz(skyxconn);
+            try {
+                neocp.populateFromSkyX(skyxconn);
+            } catch (    InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException ex) {
+                Logger.getLogger(NEOCPHelper.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        
+        System.out.println(neocp.getAlt());
         }
     }
 

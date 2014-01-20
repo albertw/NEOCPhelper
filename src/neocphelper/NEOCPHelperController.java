@@ -18,6 +18,8 @@
 package neocphelper;
 
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -64,11 +66,15 @@ public class NEOCPHelperController {
     @FXML
     private TableColumn<NEOCP, String> decColumn;
     @FXML
-    private TableColumn<NEOCP, Integer> altColumn;
+    private TableColumn<NEOCP, Double> altColumn;
     @FXML
-    private TableColumn<NEOCP, Integer> azColumn;
+    private TableColumn<NEOCP, Double> azColumn;
     @FXML
     private TableColumn<NEOCP, String> vColumn;
+    @FXML
+    private TableColumn<NEOCP, Double> rateColumn;
+    @FXML
+    private TableColumn<NEOCP, Double> paColumn;
     @FXML
     private TableColumn<NEOCP, String> updatedColumn;
     @FXML
@@ -101,9 +107,11 @@ public class NEOCPHelperController {
         discoveryColumn.setCellValueFactory(new PropertyValueFactory<NEOCP, String>("discovery"));
         raColumn.setCellValueFactory(new PropertyValueFactory<NEOCP, Float>("ra"));
         decColumn.setCellValueFactory(new PropertyValueFactory<NEOCP, String>("dec"));
-        altColumn.setCellValueFactory(new PropertyValueFactory<NEOCP, Integer>("alt"));
-        azColumn.setCellValueFactory(new PropertyValueFactory<NEOCP, Integer>("az"));
+        altColumn.setCellValueFactory(new PropertyValueFactory<NEOCP, Double>("alt"));
+        azColumn.setCellValueFactory(new PropertyValueFactory<NEOCP, Double>("az"));
         vColumn.setCellValueFactory(new PropertyValueFactory<NEOCP, String>("v"));
+        rateColumn.setCellValueFactory(new PropertyValueFactory<NEOCP, Double>("rate"));
+        paColumn.setCellValueFactory(new PropertyValueFactory<NEOCP, Double>("pa"));
         updatedColumn.setCellValueFactory(new PropertyValueFactory<NEOCP, String>("updated"));
         noteColumn.setCellValueFactory(new PropertyValueFactory<NEOCP, String>("note"));
         observationsColumn.setCellValueFactory(new PropertyValueFactory<NEOCP, Integer>("observations"));
@@ -149,6 +157,8 @@ public class NEOCPHelperController {
             Status.setText("Connection failed.");
             Status.setTextFill(Paint.valueOf("red"));
             nEOCPHelper.setSkyX(false);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(NEOCPHelperController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
