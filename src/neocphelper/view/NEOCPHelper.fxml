@@ -25,7 +25,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" disable="false" focusTraversable="false" prefHeight="400.0" prefWidth="700.0" style="&#10;" styleClass="null" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="neocphelper.NEOCPHelperController">
+<AnchorPane id="AnchorPane" disable="false" focusTraversable="false" prefHeight="400.0" prefWidth="800.0" style="&#10;" styleClass="null" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="neocphelper.NEOCPHelperController">
   <children>
     <HBox layoutX="10.0" layoutY="14.0" prefHeight="-1.0" prefWidth="-1.0">
       <children>

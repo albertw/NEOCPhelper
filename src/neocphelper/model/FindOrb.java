@@ -15,7 +15,6 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-
 package neocphelper.model;
 
 import java.io.BufferedReader;
@@ -27,20 +26,24 @@ import java.net.URLConnection;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javafx.collections.ObservableList;
+import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
 
 /**
  *
  * @author Albert White <albert.white@gmail.com>
  */
 public class FindOrb {
-    
+
     private ObservableList<NEOCP> neocpData;
     private String observations;
 
     public void setNeocpData(ObservableList<NEOCP> neocpData) {
         this.neocpData = neocpData;
     }
-    
+
     public String genFindOrb() {
         String nextLine;
         URL url;
@@ -67,8 +70,8 @@ public class FindOrb {
                         Matcher matcher = pattern.matcher(nextLine);
                         if (matcher.find()) {
                         } else {
-                            this.observations = this.observations + nextLine + 
-                                    (System.getProperty("line.separator"));
+                            this.observations = this.observations + nextLine
+                                    + (System.getProperty("line.separator"));
                         }
                     } else {
                         break;
@@ -79,9 +82,18 @@ public class FindOrb {
             System.out.println("Please check the URL:"
                     + e.toString());
         } catch (IOException e1) {
-            System.out.println("Can't read  from the Internet: "
+            Label err = new Label("Can't read  from the Internet: "
                     + e1.toString());
+
+            err.setWrapText(true);
+
+            Stage stage = new Stage();
+            StackPane layout = new StackPane();
+            layout.getChildren().setAll(err);
+            stage.setTitle("ERROR");
+            stage.setScene(new Scene(layout));
+            stage.show();
         }
-    return(this.observations);
+        return (this.observations);
     }
 }

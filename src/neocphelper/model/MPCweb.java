@@ -30,6 +30,10 @@ import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javafx.collections.ObservableList;
+import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
 
 /**
  *
@@ -69,6 +73,7 @@ public class MPCweb {
             Logger.getLogger(MPCweb.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(MPCweb.class.getName()).log(Level.SEVERE, null, ex);
+
         }
         return (pccps);
     }
@@ -99,7 +104,7 @@ public class MPCweb {
                             + "(.{3})  (.{5}) (.{4})");
                     Matcher m = splitPattern.matcher(nextLine);
                     if (m.find()) {
-                        if (pccp.contains(m.group(1).trim()) ){
+                        if (pccp.contains(m.group(1).trim())) {
                         } else {
                             int m2 = Integer.parseInt(m.group(2).trim());
                             Float m4 = Float.parseFloat(m.group(4).trim());
@@ -129,8 +134,17 @@ public class MPCweb {
             System.out.println("Please check the URL:"
                     + e.toString());
         } catch (IOException e1) {
-            System.out.println("Can't read  from the Internet: "
+            Label err = new Label("Can't read  from the Internet: "
                     + e1.toString());
+
+            err.setWrapText(true);
+
+            Stage stage = new Stage();
+            StackPane layout = new StackPane();
+            layout.getChildren().setAll(err);
+            stage.setTitle("ERROR");
+            stage.setScene(new Scene(layout));
+            stage.show();
         }
         return neocpData;
     }

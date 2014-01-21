@@ -111,8 +111,6 @@ public class NEOCPHelper extends Application {
             } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException ex) {
                 Logger.getLogger(NEOCPHelper.class.getName()).log(Level.SEVERE, null, ex);
             }
-
-            System.out.println(neocp.getAlt());
         }
     }
 

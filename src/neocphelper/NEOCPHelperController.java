@@ -20,17 +20,26 @@ package neocphelper;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.Tooltip;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Paint;
+import javafx.stage.Stage;
+import neocphelper.model.FindOrb;
 import neocphelper.model.NEOCP;
 import neocphelper.model.SkyXConnection;
 
@@ -118,11 +127,21 @@ public class NEOCPHelperController {
         observationsColumn.setCellValueFactory(new PropertyValueFactory<NEOCP, Integer>("observations"));
         arcColumn.setCellValueFactory(new PropertyValueFactory<NEOCP, Float>("arc"));
         hColumn.setCellValueFactory(new PropertyValueFactory<NEOCP, Float>("h"));
-        // Auto resize columns
-        //NEOCPlist.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         NEOCPlist.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         SkyXConnect.setTooltip(new Tooltip("Objects must be exported and loaded into \nTheSkyX Small Asteroid Database for this to work."));
         newNEOCP.setTooltip(new Tooltip("Download the latest data from the Minor Planet Center\nNEO Confirmation Page. Caution: May contain comets!"));
+
+        /* Overrode event handler to catch a double click rather than single */
+        NEOCPlist.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
+                    if (mouseEvent.getClickCount() == 2) {
+                        printobs();
+                    }
+                }
+            }
+        });
     }
 
     /**
@@ -169,28 +188,37 @@ public class NEOCPHelperController {
     public void newNEOCPFired(ActionEvent event) {
         nEOCPHelper.getNEOCP();
         Status.setText("NEOcp table updated from MPC.");
-
-        //NEOCPlist.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
-
-        /*lineColumn.setCellValueFactory(new PropertyValueFactory<NEOCP, String>("mpcline"));
-
-         ListView<String> list = new ListView<String>();
-         ObservableList<String> items = FXCollections.observableArrayList(
-         "Single", "Double", "Suite", "Family App");
-         list.setItems(items);
-         */
-        System.out.println("Pushed new NEOCP button.");
     }
 
     @FXML
     private void handleDeleteNEO() {
         ObservableList<Integer> indeces = NEOCPlist.getSelectionModel().getSelectedIndices();
-        System.out.println(indeces);
         for (int index : indeces) {
-            System.out.println(index);
             Status.setText("Deleted NEO " + NEOCPlist.getItems().get(index).getTmpdesig() + " (known bug with multiple deletes)");
             NEOCPlist.getItems().remove(index);
         }
+    }
+
+    private void printobs() {
+        ObservableList<NEOCP> neocpData = FXCollections.observableArrayList();
+        NEOCP neo = NEOCPlist.getSelectionModel().getSelectedItem();
+        neocpData.add(neo);
+
+        FindOrb forb = new FindOrb();
+        forb.setNeocpData(neocpData);
+        TextArea observations = new TextArea(forb.genFindOrb());
+        observations.setWrapText(false);
+        observations.setEditable(false);
+        observations.setMinWidth(600);
+        observations.setStyle("-fx-font-family: \"monospace\";");
+
+        Stage stage = new Stage();
+        StackPane layout = new StackPane();
+        layout.getChildren().setAll(observations);
+        stage.setTitle("Observations of NEO " + neo.getTmpdesig());
+        stage.setScene(new Scene(layout));
+        stage.show();
+
     }
 
     /**
@@ -202,8 +230,6 @@ public class NEOCPHelperController {
         this.nEOCPHelper = nEOCPHelper;
         // Add observable list data to the table
         NEOCPlist.setItems(nEOCPHelper.getNEOCPData());
-        System.out.println("in setMainApp:");
-        System.out.println(nEOCPHelper.getNEOCPData());
     }
 
     private void refreshNEOCPTable() {
