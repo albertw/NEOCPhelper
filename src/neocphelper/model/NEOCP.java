@@ -258,5 +258,4 @@ public class NEOCP {
     public String toString() {
         return this.tmpdesig;
     }
-
 }

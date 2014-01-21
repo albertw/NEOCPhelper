@@ -172,13 +172,11 @@ public class NEOCPHelperController {
         try {
             skyxconn.testconnection();
             Status.setText("Updated available data from TheSkyX.");
-            nEOCPHelper.setSkyX(true);
             nEOCPHelper.updateNEOCP();
             refreshNEOCPTable();
         } catch (IOException e) {
             Status.setText("Connection failed.");
             Status.setTextFill(Paint.valueOf("red"));
-            nEOCPHelper.setSkyX(false);
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(NEOCPHelperController.class.getName()).log(Level.SEVERE, null, ex);
         }

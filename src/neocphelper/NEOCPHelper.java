@@ -59,18 +59,6 @@ public class NEOCPHelper extends Application {
      * Constructor
      */
     public NEOCPHelper() {
-        useSkyx = false;
-        // Add some sample data
-        /*
-         neocpData.add(new NEOCP("Ceres","","","","","","","","","",""));
-         neocpData.add(new NEOCP("Vesta","","","","","","","","","",""));
-         neocpData.add(new NEOCP("2001MP14","","","","","","","","","",""));
-         neocpData.add(new NEOCP("foo","","","","","","","","","",""));
-         */
-    }
-
-    public void setSkyX(Boolean flag) {
-        useSkyx = true;
     }
 
     public void printFindOrb() {
@@ -143,8 +131,6 @@ public class NEOCPHelper extends Application {
 
             primaryStage.show();
         } catch (IOException e) {
-            // Exception gets thrown if the fxml file could not be loaded
-            e.printStackTrace();
         }
 
         showNEOCPOverview();
@@ -181,8 +167,6 @@ public class NEOCPHelper extends Application {
             controller.setMainApp(
                     this);
         } catch (IOException e) {
-            // Exception gets thrown if the fxml file could not be loaded
-            e.printStackTrace();
         }
     }
 

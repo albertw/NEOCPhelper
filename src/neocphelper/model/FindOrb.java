@@ -52,9 +52,7 @@ public class FindOrb {
         BufferedReader buff;
         this.observations = "";
         try {
-
             for (NEOCP neocp : neocpData) {
-
                 url = new URL(
                         "http://scully.cfa.harvard.edu/cgi-bin/showobsorbs.cgi?Obj="
                         + neocp.getTmpdesig() + "&obs=y");
@@ -79,8 +77,7 @@ public class FindOrb {
                 }
             }
         } catch (MalformedURLException e) {
-            System.out.println("Please check the URL:"
-                    + e.toString());
+            System.out.println("Please check the URL:" + e.toString());
         } catch (IOException e1) {
             Label err = new Label("Can't read  from the Internet: "
                     + e1.toString());

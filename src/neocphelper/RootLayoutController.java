@@ -19,15 +19,10 @@ package neocphelper;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBoxBuilder;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 /**
