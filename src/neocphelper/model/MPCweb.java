@@ -23,6 +23,10 @@ import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javafx.collections.ObservableList;
@@ -33,6 +37,42 @@ import javafx.collections.ObservableList;
  */
 public class MPCweb {
 
+    public List pccpobjectdesigs() {
+        String nextLine;
+        List pccps = new ArrayList();
+        URL url;
+        URLConnection urlConn;
+        InputStreamReader inStream;
+        BufferedReader buff;
+
+        try {
+            url = new URL("http://www.minorplanetcenter.net/iau/NEO/pccp.txt");
+            urlConn = url.openConnection();
+            inStream = new InputStreamReader(
+                    urlConn.getInputStream());
+            buff = new BufferedReader(inStream);
+
+            // Read and print the lines from pccp.txt
+            while (true) {
+                nextLine = buff.readLine();
+                if (nextLine != null) {
+                    Pattern splitPattern = Pattern.compile("^(.{7}) ");
+                    Matcher m = splitPattern.matcher(nextLine);
+                    if (m.find()) {
+                        pccps.add(m.group(1).trim());
+                    }
+                } else {
+                    break;
+                }
+            }
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(MPCweb.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(MPCweb.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return (pccps);
+    }
+
     public ObservableList getneocpData(ObservableList<NEOCP> neocpData) {
         String nextLine;
         String failedLines = "";
@@ -40,6 +80,7 @@ public class MPCweb {
         URLConnection urlConn;
         InputStreamReader inStream;
         BufferedReader buff;
+        List pccp = pccpobjectdesigs();
         try {
             // Create the URL obect that points
             // at the default file index.html
@@ -49,7 +90,7 @@ public class MPCweb {
                     urlConn.getInputStream());
             buff = new BufferedReader(inStream);
 
-            // Read and print the lines from index.html
+            // Read and print the lines from neocp.txt
             while (true) {
                 nextLine = buff.readLine();
                 if (nextLine != null) {
@@ -58,19 +99,21 @@ public class MPCweb {
                             + "(.{3})  (.{5}) (.{4})");
                     Matcher m = splitPattern.matcher(nextLine);
                     if (m.find()) {
-
-                        int m2 = Integer.parseInt(m.group(2).trim());
-                        Float m4 = Float.parseFloat(m.group(4).trim());
-                        Float m6 = Float.parseFloat(m.group(6).trim());
-                        int m9 = Integer.parseInt(m.group(9).trim());
-                        Float m10 = Float.parseFloat(m.group(10).trim());
-                        Float m11 = Float.parseFloat(m.group(11).trim());
-                        neocpData.add(new NEOCP(m.group(1).trim(),
-                                m2, m.group(3).trim(),
-                                m4, m.group(5).trim(),
-                                m6, m.group(7).trim(),
-                                m.group(8).trim(), m9,
-                                m10, m11));
+                        if (pccp.contains(m.group(1).trim()) ){
+                        } else {
+                            int m2 = Integer.parseInt(m.group(2).trim());
+                            Float m4 = Float.parseFloat(m.group(4).trim());
+                            Float m6 = Float.parseFloat(m.group(6).trim());
+                            int m9 = Integer.parseInt(m.group(9).trim());
+                            Float m10 = Float.parseFloat(m.group(10).trim());
+                            Float m11 = Float.parseFloat(m.group(11).trim());
+                            neocpData.add(new NEOCP(m.group(1).trim(),
+                                    m2, m.group(3).trim(),
+                                    m4, m.group(5).trim(),
+                                    m6, m.group(7).trim(),
+                                    m.group(8).trim(), m9,
+                                    m10, m11));
+                        }
                     } else {
                         failedLines = failedLines + nextLine + System.getProperty("line.separator");
                     }
